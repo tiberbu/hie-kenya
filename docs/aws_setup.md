@@ -58,8 +58,8 @@ sudo - E certbot certonly \
 -n \
 --agree-tos \
 --email pmanko@uw.edu \
--d moh.org.bw \
--d '*.moh.org.bw' \
+-d hie.paperless.co.ke \
+-d '*.hie.paperless.co.ke' \
 --dns-route53 \
 --preferred-challenges=dns \
 --logs-dir /tmp/letsencrypt \

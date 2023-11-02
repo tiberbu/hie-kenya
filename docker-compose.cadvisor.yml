@@ -23,7 +23,7 @@ services:
       - "traefik.http.services.cadvisor-01-secured.loadbalancer.server.port=8080" # ask Traefik to search for port 8080
 
       - "traefik.http.routers.cadvisor-01.service=cadvisor-01-secured"
-      - "traefik.http.routers.cadvisor-01.rule=Host(`cadvisor.moh.org.bw`) && PathPrefix(`/cadvisor`)"
+      - "traefik.http.routers.cadvisor-01.rule=Host(`cadvisor.hie.paperless.co.ke`) && PathPrefix(`/cadvisor`)"
       - "traefik.http.routers.cadvisor-01.priority=20"
       - "traefik.http.routers.cadvisor-01.entrypoints=websecure"
 

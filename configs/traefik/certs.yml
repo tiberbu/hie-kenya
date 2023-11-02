@@ -1,4 +1,4 @@
 tls:
   certificates:
-    - certFile: /etc/certs/live/moh.org.bw/fullchain.pem
-      keyFile: /etc/certs/live/moh.org.bw/privkey.pem
+    - certFile: /etc/certs/live/hie.paperless.co.ke/fullchain.pem
+      keyFile: /etc/certs/live/hie.paperless.co.ke/privkey.pem

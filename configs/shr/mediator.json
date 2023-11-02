@@ -2,7 +2,7 @@
   "urn": "urn:mediator:bw-shared-health-record",
   "version": "0.2.0",
   "name": "BW Shared Health Record",
-  "description": "Botswana Shared Health Record",
+  "description": "Kenya Shared Health Record",
   "defaultChannelConfig": [
     {
       "methods": [
