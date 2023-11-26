@@ -33,7 +33,7 @@ services:
       - hie
     labels:
     - 'traefik.enable=true'
-    - 'traefik.docker.network=hie-botswana_hie'
+    - 'traefik.docker.network=hie'
     - "traefik.http.routers.api.rule=Host(`traefik.hie.paperless.co.ke`)"
     - "traefik.http.routers.api.service=api@internal"
     - 'traefik.http.routers.api.tls=true'
@@ -80,7 +80,7 @@ services:
     #   - ./configs/openhim/config.json:/app/config/default.json
     labels:
       - 'traefik.enable=true'
-      - 'traefik.docker.network=hie-botswana_hie'
+      - 'traefik.docker.network=hie'
       
       - 'traefik.http.services.openhim-api.loadbalancer.server.port=8080'
       - 'traefik.http.services.openhim-api.loadbalancer.server.scheme=https'
@@ -113,7 +113,7 @@ services:
       retries: 3
     labels:
       - 'traefik.enable=true'
-      - 'traefik.docker.network=hie-botswana_hie'
+      - 'traefik.docker.network=hie'
       - 'traefik.http.routers.openhim-console.tls=true'
       - 'traefik.http.routers.openhim-console.entrypoints=web-secure'
       - 'traefik.http.routers.openhim-console.rule=Host(`hie.paperless.co.ke`)'
@@ -150,7 +150,7 @@ services:
       - hie
     labels:
       - 'traefik.enable=true'
-      - 'traefik.docker.network=hie-botswana_hie'
+      - 'traefik.docker.network=hie'
       - 'traefik.http.routers.converter.tls=true'
       - 'traefik.http.routers.converter.entrypoints=web-secure'
       - 'traefik.http.routers.converter.rule=Host(`converter.hie.paperless.co.ke`)'
