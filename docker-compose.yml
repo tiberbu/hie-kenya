@@ -30,10 +30,10 @@ services:
       - ./configs/traefik/certs.yml:/etc/traefik/dynamic_conf/certs.yml
       - certs:/etc/certs
     networks:
-      - hie
+      - hie-kenya_hie
     labels:
     - 'traefik.enable=true'
-    - 'traefik.docker.network=hie'
+    - 'traefik.docker.network=hie-kenya_hie'
     - "traefik.http.routers.api.rule=Host(`traefik.hie.paperless.co.ke`)"
     - "traefik.http.routers.api.service=api@internal"
     - 'traefik.http.routers.api.tls=true'
@@ -53,7 +53,7 @@ services:
     - certs:/etc/letsencrypt
     - letsencrypt:/var/lib/letsencrypt
     networks:
-    - hie
+    - hie-kenya_hie
 
 
   ###
@@ -74,13 +74,13 @@ services:
       timeout: 20s
       retries: 2
     networks:
-      - hie
+      - hie-kenya_hie
     volumes:
       - ./configs/openhim/healthcheck.js:/healthcheck.js
     #   - ./configs/openhim/config.json:/app/config/default.json
     labels:
       - 'traefik.enable=true'
-      - 'traefik.docker.network=hie'
+      - 'traefik.docker.network=hie-kenya_hie'
       
       - 'traefik.http.services.openhim-api.loadbalancer.server.port=8080'
       - 'traefik.http.services.openhim-api.loadbalancer.server.scheme=https'
@@ -113,12 +113,12 @@ services:
       retries: 3
     labels:
       - 'traefik.enable=true'
-      - 'traefik.docker.network=hie'
+      - 'traefik.docker.network=hie-kenya_hie'
       - 'traefik.http.routers.openhim-console.tls=true'
       - 'traefik.http.routers.openhim-console.entrypoints=web-secure'
       - 'traefik.http.routers.openhim-console.rule=Host(`hie.paperless.co.ke`)'
     networks:
-      - hie
+      - hie-kenya_hie
 
   # Loads Default OpenHIM Config
   openhim-config:
@@ -127,7 +127,7 @@ services:
     volumes:
       - ./configs/openhim/test-openhim-config.json:/app/test-openhim-config.json
     networks:
-      - hie
+      - hie-kenya_hie
 
   mongo-db:
     container_name: mongo-db
@@ -136,7 +136,7 @@ services:
       - "mongo-data:/data/db"
     restart: unless-stopped
     networks:
-      - hie
+      - hie-kenya_hie
 
   fhir-converter:
     container_name: fhir-converter
@@ -147,10 +147,10 @@ services:
       - ./configs/fhir-converter/config.json:/app/config.json
       - /app/src/service-templates
     networks:
-      - hie
+      - hie-kenya_hie
     labels:
       - 'traefik.enable=true'
-      - 'traefik.docker.network=hie'
+      - 'traefik.docker.network=hie-kenya_hie'
       - 'traefik.http.routers.converter.tls=true'
       - 'traefik.http.routers.converter.entrypoints=web-secure'
       - 'traefik.http.routers.converter.rule=Host(`converter.hie.paperless.co.ke`)'
@@ -164,7 +164,7 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
-    - hie
+    - hie-kenya_hie
     volumes:
       - /data
   kafka:
@@ -184,7 +184,7 @@ services:
     depends_on:
       - zookeeper
     networks:
-    - hie
+    - hie-kenya_hie
     entrypoint: sh -c 'sleep 30 && /opt/bitnami/scripts/kafka/entrypoint.sh /opt/bitnami/scripts/kafka/run.sh' # prevent zookeeper conflict error
   
   oracle-db:
@@ -201,7 +201,7 @@ services:
       - ./configs/omang/db:/docker-entrypoint-initdb.d
 
     networks:
-      - hie
+      - hie-kenya_hie
 volumes:
   es:
     driver: local
@@ -220,4 +220,4 @@ volumes:
   letsencrypt:
     driver: local
 networks:
-  hie:
+  hie-kenya_hie:
