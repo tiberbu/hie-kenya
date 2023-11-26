@@ -221,3 +221,4 @@ volumes:
     driver: local
 networks:
   default:
+  hie-kenya_default:
