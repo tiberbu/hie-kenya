@@ -80,7 +80,7 @@ services:
     #   - ./configs/openhim/config.json:/app/config/default.json
     labels:
       - 'traefik.enable=true'
-      - 'traefik.docker.network=hie-kenya_hie'
+      # - 'traefik.docker.network=hie-kenya_hie'
       
       - 'traefik.http.services.openhim-api.loadbalancer.server.port=8080'
       - 'traefik.http.services.openhim-api.loadbalancer.server.scheme=https'
@@ -135,8 +135,8 @@ services:
     volumes:
       - "mongo-data:/data/db"
     restart: unless-stopped
-    networks:
-      - hie-kenya_hie
+    # networks:
+    #   - hie-kenya_hie
 
   fhir-converter:
     container_name: fhir-converter
