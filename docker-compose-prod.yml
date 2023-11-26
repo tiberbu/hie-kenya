@@ -55,6 +55,99 @@ services:
     networks:
     - hie
 
+  ###
+  # OpenCR
+  ###
+  opencr:
+    container_name: opencr
+    hostname: opencr
+    image: intrahealth/opencr:latest #76efe76
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=docker
+      - HAPI_FHIR_URL=http://opencr-fhir:8080/fhir/metadata
+    networks:
+      - hie
+    volumes:
+      - ./configs/opencr/config.json:/src/server/config/config_docker.json
+      - ./configs/opencr/mediator.json:/src/server/config/mediator.json
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=hie-botswana_hie'
+      - 'traefik.http.routers.opencr.tls=true'
+      - 'traefik.http.routers.opencr.entrypoints=web-secure'
+      - 'traefik.http.services.opencr.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.opencr.rule=Host(`opencr.hie.paperless.co.ke`)'
+  opencr-fhir:
+    image: hapiproject/hapi:latest
+    container_name: opencr-fhir
+    hostname: opencr-fhir
+    restart: unless-stopped
+    networks:
+      - hie
+    healthcheck:
+      test: "curl -sS http://opencr-fhir:8080/fhir/metadata || exit 1"
+      interval: 90s
+      timeout: 30s
+      retries: 3
+    ports:
+      - 8082:8080
+    volumes:
+      - cr-data:/data/hapi
+
+  es:
+    container_name: es
+    hostname: es
+    image: intrahealth/elasticsearch:latest
+    restart: unless-stopped
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es:/usr/share/elasticsearch/data
+    networks:
+      - hie
+    healthcheck:
+      test: "curl --silent --fail http://localhost:9200/_cluster/health || exit 1"
+
+  ###
+  # SHR
+  ###
+  shr:
+    container_name: shr
+    hostname: shr
+    image: ghcr.io/i-tech-uw/shared-health-record:${SHR_VERSION-latest}
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=docker
+    networks:
+      - hie
+    volumes:
+      - ./configs/shr/config.json:/app/config/config_docker.json
+      - ./configs/shr/mediator.json:/app/config/mediator_docker.json
+    ports:
+      - 3001:3001
+      - 3002:3002
+  shr-fhir:
+    image: hapiproject/hapi:latest
+    container_name: shr-fhir
+    hostname: shr-fhir
+    restart: unless-stopped
+    volumes:
+      - shr-data:/data/hapi
+    networks:
+      - hie
+    healthcheck:
+      test: "curl -sS http://shr-fhir:8080/fhir/metadata || exit 1"
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
   ###
   # OpenHIM
