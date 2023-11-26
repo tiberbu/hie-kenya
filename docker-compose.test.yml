@@ -20,5 +20,5 @@ services:
 networks:
   hie:
     external: true
-    name: hie-botswana_hie
+    name: hie
     
